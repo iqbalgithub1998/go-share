@@ -18,7 +18,7 @@ let upload = multer({
 
 router.post('/', (req, res) => {
   // store file in upload folder
-  upload(req, res, async err => {
+  upload(req, res, async (err) => {
     console.log(req);
     // validate request
     if (!req.file) {
