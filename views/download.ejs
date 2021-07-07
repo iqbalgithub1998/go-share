@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>download</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+      .downloadcard {
+        margin: 0 auto;
+        float: none;
+        margin-bottom: 10px;
+        margin-top: 20%;
+      }
+      img {
+        width: 100px;
+        height: 100px;
+        margin-top: 20px;
+      }
+      body {
+        background-color: #fbfbfb;
+      }
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card downloadcard" style="width: 30rem">
+        <div class="text-center">
+          <img src="https://img.icons8.com/dusk/64/000000/download.png" />
+        </div>
+        <% if (locals.error) { %>
+        <h4><%= locals.error %></h4>
+        <% } else { %>
+        <div class="card-body">
+          <div class="text-center">
+            <h2>Your file is ready to download</h2>
+            <p>Link expire in 24 hours</p>
+            <h4><%= filename %></h4>
+            <small> <%= parseInt(fileSize/1000) %> KB </small>
+          </div>
+
+          <div class="text-center">
+            <a class="btn btn-primary" href="<%= downloadlink %>"
+              >Download file</a
+            >
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</html>

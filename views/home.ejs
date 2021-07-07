@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>goShare - Easy file sharing</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+        :root {
+  --main-bg-color: #eff5fe;
+  --border-color: #0288d147;
+}
+
+body,
+html {
+  font-family: system-ui;
+  background: var(--main-bg-color);
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+body,
+.drop-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.drop-zone {
+  width: 500px;
+  min-height: 200px;
+  border: 2px dashed var(--border-color);
+  margin: 30px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+.dragged.drop-zone {
+  background: var(--main-bg-color);
+  border-color: #2196f3;
+}
+
+.upload-container {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 20px 20px #0000002e;
+}
+.icon-container {
+  width: 75px;
+  height: 100px;
+  position: relative;
+}
+
+.icon-container img {
+  width: 75px;
+  position: absolute;
+  transform-origin: bottom;
+  transition: transform 250ms ease-in-out;
+}
+
+.icon-container .center {
+  z-index: 2;
+}
+.icon-container .right,
+.icon-container .left {
+  filter: grayscale(0.5);
+  transform: scale(0.9);
+}
+
+.dragged .icon-container .right {
+  transform: rotate(11deg) translateX(20px) scale(0.9);
+}
+
+.dragged .icon-container .left {
+  transform: rotate(-11deg) translateX(-20px) scale(0.9);
+}
+.dragged .icon-container .center {
+  transform: translateY(-5px);
+}
+
+#fileInput {
+  display: none;
+}
+
+.browseBtn {
+  color: #2196f3;
+  cursor: pointer;
+}
+
+    </style>
+  </head>
+  <body>
+    <section class="upload-container"> 
+      <div class="drop-zone">
+        <div class="icon-container">
+          <img src="file.svg" alt="file" class="center" draggable="false" />
+          <img src="file.svg" alt="file" class="left" draggable="false" />
+          <img src=" file.svg" alt="file" class="right" draggable="false" />
+        </div>
+        <input type="file" id="fileInput">
+        <div class="title">Drop Your Files here or, <span class="browseBtn" >browse</span> </span></div>
+      </div>
+    </section>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+
+      const dropZone = document.querySelector(".drop-zone");
+const fileInput = document.querySelector("#fileInput");
+const browseBtn = document.querySelector(".browseBtn");
+
+const host = "https://goshare-mik.herokuapp.com/";
+const path ="http://localhost:5000/api/files"
+const uploadURL = `${host}api/files`;
+
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  !dropZone.classList.contains("dragged") && dropZone.classList.add("dragged");
+});
+
+dropZone.addEventListener("dragleave", () => {
+  dropZone.classList.remove("dragged");
+});
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropZone.classList.remove("dragged");
+  const files = e.dataTransfer.files;
+  //console.log(files);
+  if (files.length) {
+    fileInput.files = files;
+    post(path);
+  }
+});
+
+browseBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+// const uploadFile = () => {
+//   const files = fileInput.files[0];
+//   const formData = new FormData();
+//   formData.append("myfile", files);
+
+//   const xhr = new XMLHttpRequest();
+//   xhr.onreadystatechange = () => {
+//     consoe.log(xhr.readyState);
+//   };
+
+//   xhr.open("POST", uploadURL);
+//   xhr.send(formData);
+// };
+
+    function post(path,method="POST"){
+        const form = document.createElement("form");
+        form.method = method;
+        form.action=path;
+        const files = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("myfile", files);
+        form.append(formData);
+        document.body.appendChild(form);
+        const response=form.submit();
+        console.log(response);
+    }
+
+  </script>
+</html>
+ 
