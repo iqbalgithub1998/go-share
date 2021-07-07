@@ -4,13 +4,11 @@ const File = require("../models/file");
 const { v4: uuid4 } = require("uuid");
 
 let storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "upload/"),
+  destination: (req, file, cb) => cb(null, 'upload/'),
   filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${
-      file.originalname
-    }`;
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${file.originalname}`;
     cb(null, uniqueName);
-  },
+  }
 });
 
 let upload = multer({
@@ -18,9 +16,9 @@ let upload = multer({
   limit: { fileSize: 5000000 },
 }).single("myfile");
 
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   // store file in upload folder
-  upload(req, res, async (err) => {
+  upload(req, res, async err => {
     console.log(req);
     // validate request
     if (!req.file) {
