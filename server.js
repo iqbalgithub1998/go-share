@@ -24,6 +24,7 @@ app.use(express.json({ extended: true }));
 
 // routes are here ................
 
+app.use("/api/file/delete", require("./routes/DeleteFile"));
 app.use("/api/files", require("./routes/files"));
 app.use("/files", require("./routes/show"));
 app.use("/files/download", require("./routes/download"));

@@ -1,9 +1,7 @@
 const router = require("express").Router();
 const multer = require("multer");
-const path = require("path");
 const File = require("../models/file");
 const { v4: uuid4 } = require("uuid");
-const fs = require("fs");
 
 let storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "upload/"),
@@ -31,8 +29,6 @@ router.post("/", (req, res) => {
     if (err) {
       res.status(500).send({ error: err.message });
     }
-
-    // store file into database
 
     const file = new File({
       filename: req.file.filename,
@@ -67,24 +63,6 @@ router.post("/pin", async (req, res) => {
   return res.json({
     file: response,
   });
-});
-
-// delete a file code is here..
-
-router.delete("/delete", async (req, res) => {
-  const { uuid } = req.body;
-  if (!uuid) {
-    return res.status(422).send({ error: "Some error occor" });
-  }
-
-  const file = await File.findOne({ uuid: uuid });
-  try {
-    fs.unlinkSync(file.path);
-    await file.delete();
-    return res.status(422).send({ success: "file deleted." });
-  } catch (error) {
-    res.status(500).send("some error occur");
-  }
 });
 
 router.post("/send", async (req, res) => {
