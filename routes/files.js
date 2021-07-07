@@ -1,26 +1,26 @@
 const router = require("express").Router();
-const multer = require("multer");
+let multer  = require('multer');
 const File = require("../models/file");
 const { v4: uuid4 } = require("uuid");
 
-let storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'upload/'),
-  filename: (req, file, cb) => {
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'upload/')
+  },
+  filename: function (req, file, cb) {
     const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${file.originalname}`;
-    cb(null, uniqueName);
+    cb(null, uniqueName)
   }
-});
+})
 
 let upload = multer({
   storage,
-  limit: { fileSize: 5000000 },
-}).single("myfile");
+}).single('myfile');
 
 router.post('/', (req, res) => {
   // store file in upload folder
   upload(req, res, async (err) => {
     console.log(req);
-    // validate request
     if (!req.file) {
       return res.json({ error: "All fields are required." });
     }
