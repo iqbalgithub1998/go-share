@@ -1,7 +1,7 @@
 const express = require("express");
 
 const app = express();
-
+let bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 
 connectDB();
@@ -20,7 +20,12 @@ app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
-app.use(express.json({ extended: true }));
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
 // routes are here ................
 
